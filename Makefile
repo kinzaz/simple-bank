@@ -13,5 +13,8 @@ test:
 server:
 	go run main.go
 
-.PHONY: migrate-up migrate-down sqlc server
+mock:
+	mockgen -package mockdb -destination db/mock/store.go  github.com/kinzaz/simple-bank/db/sqlc Store
+
+.PHONY: migrate-up migrate-down sqlc server mock
 

@@ -134,7 +134,6 @@ func TestTransferTxDeadlock(t *testing.T) {
 	for i := 0; i < n; i++ {
 		err := <-errs
 		require.NoError(t, err)
-
 	}
 
 	updatedAccount1, err := testQueries.GetAccount(context.Background(), account1.ID)
@@ -145,5 +144,4 @@ func TestTransferTxDeadlock(t *testing.T) {
 
 	require.Equal(t, account1.Balance, updatedAccount1.Balance)
 	require.Equal(t, account2.Balance, updatedAccount2.Balance)
-
 }

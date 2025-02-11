@@ -83,5 +83,4 @@ func (server *Server) listAccount(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, accounts)
-
 }
