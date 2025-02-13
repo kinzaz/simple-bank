@@ -1,5 +1,8 @@
 MIGRATION_PATH = ./db/migration
 
+postgres:
+	docker run --name postgres12 --network bank-network -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=password -e POSTGRES_DB=simple_bank -d postgres:12-alpine
+
 migrate-up:
 	migrate -path db/migration -database "postgresql://postgres:password@localhost:5432/simple_bank?sslmode=disable" up 1 
 
@@ -24,5 +27,5 @@ server:
 mock:
 	mockgen -package mockdb -destination db/mock/store.go  github.com/kinzaz/simple-bank/db/sqlc Store
 
-.PHONY: migrate-up migrate-down sqlc server mock migration migrate-version
+.PHONY: migrate-up migrate-down sqlc server mock migration migrate-version postgres
 
