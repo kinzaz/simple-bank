@@ -35,5 +35,6 @@ proto:
 
 evans: 
 	evans --host localhost --port 9090 -r repl
+	
 .PHONY: migrate-up migrate-down sqlc server mock migration migrate-version postgres proto evans
 
