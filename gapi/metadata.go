@@ -30,8 +30,8 @@ func (server *Server) extractMetadata(ctx context.Context) *Metadata {
 			mtdt.UserAgent = userAgents[0]
 		}
 
-		if clientsIPs := md.Get(xForwardedForHeader); len(clientsIPs) > 0 {
-			mtdt.ClientIP = clientsIPs[0]
+		if clientIPs := md.Get(xForwardedForHeader); len(clientIPs) > 0 {
+			mtdt.ClientIP = clientIPs[0]
 		}
 	}
 
