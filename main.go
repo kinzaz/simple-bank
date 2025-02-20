@@ -16,6 +16,7 @@ import (
 	db "github.com/kinzaz/simple-bank/db/sqlc"
 	_ "github.com/kinzaz/simple-bank/doc/statik"
 	"github.com/kinzaz/simple-bank/gapi"
+	"github.com/kinzaz/simple-bank/mail"
 	"github.com/kinzaz/simple-bank/pb"
 	"github.com/kinzaz/simple-bank/util"
 	"github.com/kinzaz/simple-bank/worker"
@@ -54,7 +55,7 @@ func main() {
 
 	taskDistributor := worker.NewRedisTaskDistributor(redisOpt)
 
-	go runTaskProcessor(redisOpt, store)
+	go runTaskProcessor(config, redisOpt, store)
 	go runGatewayServer(config, store, taskDistributor)
 	runGrpcServer(config, store, taskDistributor)
 }
@@ -72,8 +73,9 @@ func runDBMigration(migrationURL string, dsn string) {
 	log.Info().Msg("db migrated successfully")
 }
 
-func runTaskProcessor(redisOpt asynq.RedisClientOpt, store db.Store) {
-	taskProcessor := worker.NewRedisTaskProcessor(redisOpt, store)
+func runTaskProcessor(config util.Config, redisOpt asynq.RedisClientOpt, store db.Store) {
+	mailer := mail.NewGmailSender(config.EmailSenderName, config.EmailSenderAddress, config.EmailSenderPassword)
+	taskProcessor := worker.NewRedisTaskProcessor(redisOpt, store, mailer)
 	log.Info().Msg("start task processor")
 	err := taskProcessor.Start()
 	if err != nil {
