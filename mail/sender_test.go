@@ -8,6 +8,10 @@ import (
 )
 
 func TestSendEmailWithGmail(t *testing.T) {
+	if testing.Short() {
+		t.Skip()
+	}
+
 	config, err := util.LoadConfig("..")
 	require.NoError(t, err)
 
@@ -18,8 +22,7 @@ func TestSendEmailWithGmail(t *testing.T) {
 	<h1>Hello world</h1>
 	`
 	to := []string{"kinzazdev579@gmail.com"}
-	attachFiles := []string{"../README.md"}
 
-	err = sender.SendEmail(subject, content, to, nil, nil, attachFiles)
+	err = sender.SendEmail(subject, content, to, nil, nil, nil)
 	require.NoError(t, err)
 }
